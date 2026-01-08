@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Urbanist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { ReduxProvider } from "@/store/provider";
+import { Toaster } from "@/components/ui/Toaster";
 import "./globals.css";
 
 const urbanist = Urbanist({
@@ -30,9 +31,13 @@ export default function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         >
-          <ReduxProvider>{children}</ReduxProvider>
+          <ReduxProvider>
+            {children}
+            <Toaster />
+          </ReduxProvider>
         </ThemeProvider>
       </body>
     </html>
   );
 }
+

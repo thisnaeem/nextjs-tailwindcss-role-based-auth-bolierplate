@@ -8,11 +8,12 @@ import { signIn } from "@/lib/auth-client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { toast } from "sonner";
 
 export function LoginForm() {
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
     const router = useRouter();
+
 
     const {
         register,
@@ -23,9 +24,6 @@ export function LoginForm() {
     });
 
     const onSubmit = async (data: LoginInput) => {
-        setIsLoading(true);
-        setError(null);
-
         try {
             const result = await signIn.email({
                 email: data.email,
@@ -33,17 +31,21 @@ export function LoginForm() {
             });
 
             if (result.error) {
-                setError(result.error.message || "Login failed");
+                toast.error(result.error.message || "Login failed");
                 return;
             }
 
+            toast.success("Welcome back!", {
+                description: "You have successfully signed in.",
+            });
             router.push("/app");
             router.refresh();
         } catch (err) {
-            setError("An unexpected error occurred");
+            toast.error("An unexpected error occurred");
         } finally {
             setIsLoading(false);
         }
+
     };
 
     const handleGoogleSignIn = async () => {
@@ -54,10 +56,11 @@ export function LoginForm() {
                 callbackURL: "/app",
             });
         } catch (err) {
-            setError("Failed to sign in with Google");
+            toast.error("Failed to sign in with Google");
             setIsLoading(false);
         }
     };
+
 
     return (
         <Card variant="glass" className="w-full max-w-md mx-auto">
@@ -69,11 +72,6 @@ export function LoginForm() {
             </CardHeader>
             <CardContent>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                    {error && (
-                        <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-500 text-sm">
-                            {error}
-                        </div>
-                    )}
 
                     <Input
                         label="Email"

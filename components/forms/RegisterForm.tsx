@@ -8,11 +8,12 @@ import { signUp, signIn } from "@/lib/auth-client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { toast } from "sonner";
 
 export function RegisterForm() {
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
     const router = useRouter();
+
 
     const {
         register,
@@ -23,9 +24,6 @@ export function RegisterForm() {
     });
 
     const onSubmit = async (data: RegisterInput) => {
-        setIsLoading(true);
-        setError(null);
-
         try {
             const result = await signUp.email({
                 email: data.email,
@@ -34,17 +32,21 @@ export function RegisterForm() {
             });
 
             if (result.error) {
-                setError(result.error.message || "Registration failed");
+                toast.error(result.error.message || "Registration failed");
                 return;
             }
 
+            toast.success("Account created!", {
+                description: "Welcome to NextAuth. You have successfully registered.",
+            });
             router.push("/app");
             router.refresh();
         } catch (err) {
-            setError("An unexpected error occurred");
+            toast.error("An unexpected error occurred");
         } finally {
             setIsLoading(false);
         }
+
     };
 
     const handleGoogleSignUp = async () => {
@@ -55,10 +57,11 @@ export function RegisterForm() {
                 callbackURL: "/app",
             });
         } catch (err) {
-            setError("Failed to sign up with Google");
+            toast.error("Failed to sign up with Google");
             setIsLoading(false);
         }
     };
+
 
     return (
         <Card variant="glass" className="w-full max-w-md mx-auto">
@@ -70,11 +73,6 @@ export function RegisterForm() {
             </CardHeader>
             <CardContent>
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                    {error && (
-                        <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-500 text-sm">
-                            {error}
-                        </div>
-                    )}
 
                     <Input
                         label="Full Name"
