@@ -1,6 +1,11 @@
 @import "tailwindcss";
 
 :root {
+  --background: #ffffff;
+  --foreground: #030712;
+}
+
+.dark {
   --background: #030712;
   --foreground: #f9fafb;
 }
@@ -14,6 +19,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Smooth scrolling */
@@ -28,6 +34,10 @@ html {
 }
 
 ::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.dark ::-webkit-scrollbar-track {
   background: rgba(255, 255, 255, 0.05);
 }
 
@@ -42,8 +52,13 @@ html {
 
 /* Glassmorphism utilities */
 .glass {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.dark .glass {
+  background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -97,5 +112,26 @@ html {
 /* Selection */
 ::selection {
   background: rgba(139, 92, 246, 0.3);
-  color: white;
+  color: inherit;
+}
+
+/* Light mode specific overrides */
+.light .bg-gray-950 {
+  background-color: #f9fafb;
+}
+
+.light .bg-gray-900\/50 {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.light .text-white {
+  color: #111827;
+}
+
+.light .text-gray-400 {
+  color: #6b7280;
+}
+
+.light .border-white\/10 {
+  border-color: rgba(0, 0, 0, 0.1);
 }

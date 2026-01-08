@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { Avatar, Badge } from "@/components/ui";
 import { signOut, useSession } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import { ThemeToggle } from "./ThemeToggle";
 
 interface SidebarProps {
     variant: "admin" | "user";
@@ -88,31 +89,33 @@ export function Sidebar({ variant }: SidebarProps) {
     };
 
     const userName = session?.user?.name || "User";
-    const userEmail = session?.user?.email;
     const userImage = session?.user?.image;
 
     return (
-        <aside className="fixed left-0 top-0 bottom-0 w-64 bg-gray-900/50 backdrop-blur-xl border-r border-white/10 flex flex-col">
+        <aside className="fixed left-0 top-0 bottom-0 w-64 bg-gray-900/50 dark:bg-gray-900/50 backdrop-blur-xl border-r border-white/10 dark:border-white/10 flex flex-col">
             {/* Logo */}
             <div className="p-6 border-b border-white/10">
-                <Link href="/" className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-gradient-to-br from-violet-600 to-indigo-600 rounded-lg flex items-center justify-center">
-                        <svg
-                            className="w-5 h-5 text-white"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M13 10V3L4 14h7v7l9-11h-7z"
-                            />
-                        </svg>
-                    </div>
-                    <span className="text-xl font-bold text-white">NextAuth</span>
-                </Link>
+                <div className="flex items-center justify-between">
+                    <Link href="/" className="flex items-center gap-2">
+                        <div className="w-8 h-8 bg-gradient-to-br from-violet-600 to-indigo-600 rounded-lg flex items-center justify-center">
+                            <svg
+                                className="w-5 h-5 text-white"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                                />
+                            </svg>
+                        </div>
+                        <span className="text-xl font-bold text-white dark:text-white">NextAuth</span>
+                    </Link>
+                    <ThemeToggle className="text-gray-400 hover:text-white" />
+                </div>
             </div>
 
             {/* Navigation */}
